@@ -5,6 +5,7 @@ var path = require('path');
 var intersection = require('./lib/intersection');
 var difference = require('./lib/difference');
 var StripBadReexports = require('./lib/strip-bad-reexports');
+var cacheKeyForTree = require('calculate-cache-key-for-tree');
 
 module.exports = {
   name: require('./package').name,
@@ -34,6 +35,10 @@ module.exports = {
   treeForApp: function(tree) {
     tree = this.filterHelpers(tree, new RegExp(/^helpers\//, 'i'));
     return this._super.treeForApp.call(this, tree);
+  },
+
+  cacheKeyForTree(treeType) {
+    return cacheKeyForTree(treeType, this);
   },
 
   filterHelpers: function(tree, regex) {
